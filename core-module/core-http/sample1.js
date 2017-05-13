@@ -1,10 +1,11 @@
 'use strict'
 
 const http = require('https');
-const HOST = 'requestb.in';
-const PATH = '/1jxev3n1';
+const HOST = 'mackerel.io';
+const SERVICE = 'TweetKindle'
+const PATH = `/api/v0/services/${SERVICE}/tsdb`;
 
-const timestamp = new Date().getTime();
+const timestamp = Math.floor(new Date().getTime() / 1000);
 
 let postData = [
   {"name": "Sample.foo", "time": timestamp, "value": 30},
@@ -12,13 +13,14 @@ let postData = [
 ]
 
 let postDataStr = JSON.stringify(postData);
+console.log('postDataStr: ' + postDataStr);
 let options = {
   host: HOST,
   port: 443,
   path: PATH,
   method: 'POST',
   headers: {
-    'X-Api-Key': 'aaaaaaaaaaaaaaaaaaa',
+    'X-Api-Key': process.env.MACKEREL_APIKEY,
     'Content-Type': 'application/json',
     'Content-Length': postDataStr.length
   }
